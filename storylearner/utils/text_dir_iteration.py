@@ -1,5 +1,5 @@
 import os
-#from pathlib import Path
+import pandas as pd
 
 
 def read_text_files_from_directory(directory_path: str):
@@ -31,11 +31,22 @@ def read_text_files_from_directory(directory_path: str):
 
     return list_of_all_filenames, list_of_all_cleaned_texts
 
+def turn_filenames_and_cleaned_texts_into_dataframe(list_of_all_filenames: list, list_of_all_cleaned_texts: list):
+    '''
+    Input: List of all filenames and list of all cleaned texts of those files.
+    Output: DataFrame with ... variables.
+    '''
+    dataframe_as_dictionary = {
+        'filenames': list_of_all_filenames,
+        'cleaned_text': list_of_all_cleaned_texts,
+    }
+
+    dataframe = pd.DataFrame(dataframe_as_dictionary)
+
+    return dataframe
 
 
-
-
-
-
-#rel_path_directory = './raw_data'
-#print(read_text_files_from_directory(rel_path_directory))
+rel_path_directory = './raw_data'
+list_of_all_filenames, list_of_all_cleaned_texts = read_text_files_from_directory(rel_path_directory)
+dataframe = turn_filenames_and_cleaned_texts_into_dataframe(list_of_all_filenames, list_of_all_cleaned_texts)
+print(dataframe)
