@@ -5,7 +5,8 @@ import os
 def read_text_files_from_directory(directory_path: str):
     '''
     Input: Path to directory containing only text files.
-    Ouptut: List of all filenames, and all cleaned texts.
+    Ouptut: List of all filenames in directory, list of all cleaned texts from files
+    -> return list:filenames, list:cleaned_texts
     '''
 
     # Create empty lists for variables
