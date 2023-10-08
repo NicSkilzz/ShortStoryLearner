@@ -67,10 +67,10 @@ def add_describing_columns_to_dataframe(dataframe: pd.DataFrame):
             '.', ' ').replace(':', ' ').lower().split()
     )
 
-    # Add word word_count_with_duplicates column
+    # Add word_count_with_duplicates column
     dataframe['word_count_with_duplicates'] = len(dataframe['word_list'])
 
-    # Add word word_count_with_duplicates column
+    # Add word_count_with_duplicates column
     dataframe['word_count_without_duplicates'] = dataframe['word_list'].apply(
         lambda x: len(set(x))
     )
@@ -108,4 +108,4 @@ if __name__ == '__main__':
     dataframe = turn_filenames_and_cleaned_texts_into_dataframe(
         list_of_all_filenames, list_of_all_cleaned_texts)
     new_dataframe = add_describing_columns_to_dataframe(dataframe)
-    print(new_dataframe.columns)
+    print(new_dataframe['cleaned_text'])
