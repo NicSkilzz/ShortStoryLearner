@@ -74,6 +74,28 @@ def add_describing_columns_to_dataframe(dataframe: pd.DataFrame):
         lambda x: len(set(x))
             )
 
+    # Create function to calculate the average word length
+    def calculate_average_word_length(word_list: list):
+        '''
+        Input: word_list
+        Output: average word length
+        '''
+        # Calculate the total characters in the given text
+        total_characters = len(''.join(character for word in word_list for character in word))
+
+        # Calculate the total words in the given text
+        total_words = len(word_list)
+
+        # Calculate average
+        average_word_length = total_characters / total_words
+
+        return average_word_length
+
+    # Apply function to calculate the average word length to DataFrame
+    dataframe['average_word_length'] = dataframe['word_list'].apply(
+        lambda x: calculate_average_word_length(x)
+            )
+
     return dataframe
 
 
@@ -91,5 +113,7 @@ rel_path_directory = './raw_data'
 list_of_all_filenames, list_of_all_cleaned_texts = read_text_files_from_directory(rel_path_directory)
 dataframe = turn_filenames_and_cleaned_texts_into_dataframe(list_of_all_filenames, list_of_all_cleaned_texts)
 new_dataframe = add_describing_columns_to_dataframe(dataframe)
-total_word_list_with_duplicates = create_total_word_list_with_duplicates(new_dataframe)
-print(len(total_word_list_with_duplicates))
+print(new_dataframe.columns)
+
+#total_word_list_with_duplicates = create_total_word_list_with_duplicates(new_dataframe)
+#print(len(total_word_list_with_duplicates))
