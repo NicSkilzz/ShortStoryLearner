@@ -15,17 +15,17 @@ def read_text_files_from_directory(directory_path: str):
 
     for filename in os.listdir(directory_path):
 
-        #Read the file
+        # Read the file
         filepath = os.path.join(directory_path, filename)
         f = open(filepath, 'r')
         content = f.read()
 
         # Clean the text
-        ## by removing all characters except letters and selected characters in variable: important_characters
+        # by removing all characters except letters and selected characters in variable: important_characters
         important_characters = ",. :"
         text_only_letters_and_lower_case = ''.join(
             character for character in content if character.isalpha() or character in important_characters
-            )
+        )
 
         # Append current variables to corresponding lists
         list_of_all_filenames.append(filename)
@@ -62,9 +62,10 @@ def add_describing_columns_to_dataframe(dataframe: pd.DataFrame):
     '''
 
     # Add word_list column
-    dataframe['word_list'] =  dataframe['cleaned_text'].apply(
-        lambda x: x.replace(',', ' ').replace('.', ' ').replace(':', ' ').lower().split()
-        )
+    dataframe['word_list'] = dataframe['cleaned_text'].apply(
+        lambda x: x.replace(',', ' ').replace(
+            '.', ' ').replace(':', ' ').lower().split()
+    )
 
     # Add word word_count_with_duplicates column
     dataframe['word_count_with_duplicates'] = len(dataframe['word_list'])
@@ -72,7 +73,7 @@ def add_describing_columns_to_dataframe(dataframe: pd.DataFrame):
     # Add word word_count_with_duplicates column
     dataframe['word_count_without_duplicates'] = dataframe['word_list'].apply(
         lambda x: len(set(x))
-            )
+    )
 
     # Create function to calculate the average word length
     def calculate_average_word_length(word_list: list):
@@ -81,7 +82,8 @@ def add_describing_columns_to_dataframe(dataframe: pd.DataFrame):
         Output: average word length
         '''
         # Calculate the total characters in the given text
-        total_characters = len(''.join(character for word in word_list for character in word))
+        total_characters = len(
+            ''.join(character for word in word_list for character in word))
 
         # Calculate the total words in the given text
         total_words = len(word_list)
@@ -94,14 +96,16 @@ def add_describing_columns_to_dataframe(dataframe: pd.DataFrame):
     # Apply function to calculate the average word length to DataFrame
     dataframe['average_word_length'] = dataframe['word_list'].apply(
         lambda x: calculate_average_word_length(x)
-            )
+    )
 
     return dataframe
 
 
 if __name__ == '__main__':
     rel_path_directory = './raw_data'
-    list_of_all_filenames, list_of_all_cleaned_texts = read_text_files_from_directory(rel_path_directory)
-    dataframe = turn_filenames_and_cleaned_texts_into_dataframe(list_of_all_filenames, list_of_all_cleaned_texts)
+    list_of_all_filenames, list_of_all_cleaned_texts = read_text_files_from_directory(
+        rel_path_directory)
+    dataframe = turn_filenames_and_cleaned_texts_into_dataframe(
+        list_of_all_filenames, list_of_all_cleaned_texts)
     new_dataframe = add_describing_columns_to_dataframe(dataframe)
     print(new_dataframe.columns)
