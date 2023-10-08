@@ -1,3 +1,9 @@
+### ToDos
+- Calculate average sentence length
+- Calculate average word rarity percentage
+- Weight the variables (avg. word length, avg. sentence length, avg. rarity of words)
+
+
 ### Help
 - add requirements to requirements.in -> use "pip-compile requirements.in" to add
   those requirements to requirements to requirements.txt -> use "pip install -r requirements.txt" to add requirements to your local environment
