@@ -74,12 +74,22 @@ def add_describing_columns_to_dataframe(dataframe: pd.DataFrame):
         lambda x: len(set(x))
             )
 
-
     return dataframe
+
+
+def create_total_word_list_with_duplicates(dataframe: pd.DataFrame):
+    '''
+    Input: DataFrame with a "word_list" column.
+    Output: List containing all the words from all the texts with duplicates.
+    '''
+    total_word_list_with_duplicates = [word for list in dataframe['word_list'] for word in list]
+
+    return total_word_list_with_duplicates
 
 
 rel_path_directory = './raw_data'
 list_of_all_filenames, list_of_all_cleaned_texts = read_text_files_from_directory(rel_path_directory)
 dataframe = turn_filenames_and_cleaned_texts_into_dataframe(list_of_all_filenames, list_of_all_cleaned_texts)
 new_dataframe = add_describing_columns_to_dataframe(dataframe)
-print(new_dataframe.columns)
+total_word_list_with_duplicates = create_total_word_list_with_duplicates(new_dataframe)
+print(len(total_word_list_with_duplicates))
