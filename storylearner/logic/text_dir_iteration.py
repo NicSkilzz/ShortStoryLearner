@@ -17,7 +17,7 @@ def read_text_files_from_directory(directory_path: str):
 
         # Read the file
         filepath = os.path.join(directory_path, filename)
-        f = open(filepath, 'r')
+        f = open(filepath, 'r', encoding='utf-8')
         content = f.read()
 
         # Clean the text
