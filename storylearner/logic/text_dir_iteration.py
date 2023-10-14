@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-
+import spacy
 
 def read_text_files_from_directory(directory_path: str):
     '''
@@ -20,18 +20,33 @@ def read_text_files_from_directory(directory_path: str):
         f = open(filepath, 'r', encoding='utf-8')
         content = f.read()
 
-        # Clean the text
-        # by removing all characters except letters and selected characters in variable: important_characters
-        important_characters = ",. :"
-        text_only_letters_and_lower_case = ''.join(
-            character for character in content if character.isalpha() or character in important_characters
-        )
+        cleaned_text = clean_text(content)
+        
 
         # Append current variables to corresponding lists
         list_of_all_filenames.append(filename)
-        list_of_all_cleaned_texts.append(text_only_letters_and_lower_case)
+        list_of_all_cleaned_texts.append(cleaned_text)
 
     return list_of_all_filenames, list_of_all_cleaned_texts
+
+
+def clean_text(text: str):
+
+    # remove all characters except letters and selected characters in variable: important_characters
+    important_characters = ",. :"
+    cleaned_text = ''.join(
+        character for character in text if character.isalpha() or character in important_characters
+    )
+
+    # remove all names
+    # if throws error run: python[3] -m spacy download de_core_news_lg
+    # nlp = spacy.load("de_core_news_lg")
+    # doc = nlp(text)
+    # for ne in doc.ents:
+    #     print(ne.label_)
+    #     print(ne)
+    # print(nlp.pipe_names)
+    return cleaned_text
 
 
 def turn_filenames_and_cleaned_texts_into_dataframe(list_of_all_filenames: list, list_of_all_cleaned_texts: list):
