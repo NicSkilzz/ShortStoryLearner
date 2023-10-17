@@ -2,6 +2,7 @@
 - Calculate average word rarity percentage (K)
 - Weight the variables (avg. word length, avg. sentence length, avg. rarity of words) (K)
 - Change file name to fit classes (K)
+- GUI: Button that loads dataframe to screen
 
 
 ### Help
