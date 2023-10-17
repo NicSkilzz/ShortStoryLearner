@@ -3,7 +3,7 @@
 - Calculate average word rarity percentage (K)
 - Weight the variables (avg. word length, avg. sentence length, avg. rarity of words) (K)
 - Filter names from text (H)
-- Turn files with functions into classes (K)
+- Change file name to fit classes (K)
 
 
 ### Help
