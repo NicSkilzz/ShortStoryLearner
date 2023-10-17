@@ -1,83 +1,96 @@
 import pandas as pd
 
-from storylearner.logic.text_dir_iteration import read_text_files_from_directory, turn_filenames_and_cleaned_texts_into_dataframe, add_describing_columns_to_dataframe
+from storylearner.logic.text_dir_iteration import DataFrameCreator
+
+class RarityRankingCreater:
+
+    def __init__(self, dataframe):
+        '''Uses the class functions to create the word rarity ranking.
+
+        Args:
+            dataframe (pd.DataFrame): DataFrame that contains word lists from all texts.
+        '''
+        self.dataframe = dataframe
+        self.total_word_list_with_duplicates = self.create_total_word_list_with_duplicates(
+            self.dataframe
+        )
+        self.word_rarity_ranking = self.create_word_rarity_ranking(
+            self.total_word_list_with_duplicates
+        )
+
+    def create_total_word_list_with_duplicates(self, dataframe: pd.DataFrame):
+        '''
+        Input: DataFrame with a "word_list" column.
+        Output: List containing all the words from all the texts with duplicates.
+        '''
+        total_word_list_with_duplicates = [
+            word for list in dataframe['word_list'] for word in list]
+
+        return total_word_list_with_duplicates
 
 
-def create_total_word_list_with_duplicates(dataframe: pd.DataFrame):
-    '''
-    Input: DataFrame with a "word_list" column.
-    Output: List containing all the words from all the texts with duplicates.
-    '''
-    total_word_list_with_duplicates = [
-        word for list in dataframe['word_list'] for word in list]
+    def create_word_rarity_ranking(self, total_word_list_with_duplicates: list):
+        '''
+        Input: List of all the words from all the texts with duplicates
+        Output: DataFrame with columns ("word", "word_percentage", "ranking")
+        '''
 
-    return total_word_list_with_duplicates
+        # Calculate total_amount_words
+        total_amount_words = len(total_word_list_with_duplicates)
 
+        # Create word_list_without_duplicates
+        word_list_without_duplicates = list(set(total_word_list_with_duplicates))
 
-def create_word_rarity_ranking(total_word_list_with_duplicates: list):
-    '''
-    Input: List of all the words from all the texts with duplicates
-    Output: DataFrame with columns ("word", "word_percentage", "ranking")
-    '''
+        # Create lists for columns: "word" and "word_percentage"
+        word_list = []
+        word_percentage_list = []
+        print("Starting Iteration word_list_without_duplicates")
+        amount = 0
+        print(len(word_list_without_duplicates))
+        # Iterate through word_list_without_duplicates and calculate the percentage of each word
+        for current_word in word_list_without_duplicates:
+            amount += 1
+            if amount % 20 == 0:
+                print(f"{amount} / {len(word_list_without_duplicates)}")
+            if current_word not in word_list:
+                current_word_count = 0
+                for word in total_word_list_with_duplicates:
+                    if word == current_word:
+                        current_word_count += 1
 
-    # Calculate total_amount_words
-    total_amount_words = len(total_word_list_with_duplicates)
+                # Calculate current_word_percentage
+                current_word_percentage = current_word_count / total_amount_words
 
-    # Create word_list_without_duplicates
-    word_list_without_duplicates = list(set(total_word_list_with_duplicates))
+                # Append current values to lists
+                word_list.append(current_word)
+                word_percentage_list.append(current_word_percentage)
 
-    # Create lists for columns: "word" and "word_percentage"
-    word_list = []
-    word_percentage_list = []
+        # Create a temporary dictionary
+        word_rarity_df_as_dict = {
+            'word': word_list,
+            'word_percentage': word_percentage_list
+        }
 
-    # Iterate through word_list_without_duplicates and calculate the percentage of each word
-    for current_word in word_list_without_duplicates:
-        if current_word not in word_list:
-            current_word_count = 0
-            for word in total_word_list_with_duplicates:
-                if word == current_word:
-                    current_word_count += 1
+        # Turn dictionary into DataFrame
+        word_rarity_df = pd.DataFrame(word_rarity_df_as_dict)
 
-            # Calculate current_word_percentage
-            current_word_percentage = current_word_count / total_amount_words
+        # Sort dataframe by word_percentage (descending)
+        word_rarity_ranking_df = word_rarity_df.sort_values(
+            'word_percentage', ascending=False, ignore_index=True)
 
-            # Append current values to lists
-            word_list.append(current_word)
-            word_percentage_list.append(current_word_percentage)
+        # Add ranking column to word_rarity_ranking_df
+        word_rarity_ranking_df['ranking'] = word_rarity_ranking_df.index + 1
 
-    # Create a temporary dictionary
-    word_rarity_df_as_dict = {
-        'word': word_list,
-        'word_percentage': word_percentage_list
-    }
-
-    # Turn dictionary into DataFrame
-    word_rarity_df = pd.DataFrame(word_rarity_df_as_dict)
-
-    # Sort dataframe by word_percentage (descending)
-    word_rarity_ranking_df = word_rarity_df.sort_values(
-        'word_percentage', ascending=False, ignore_index=True)
-
-    # Add ranking column to word_rarity_ranking_df
-    word_rarity_ranking_df['ranking'] = word_rarity_ranking_df.index + 1
-
-    return word_rarity_ranking_df
+        return word_rarity_ranking_df
 
 
 if __name__ == '__main__':
     # Create Test-DataFrame
     rel_path_directory = './raw_data'
-    list_of_all_filenames, list_of_all_cleaned_texts = read_text_files_from_directory(
-        rel_path_directory)
-    dataframe = turn_filenames_and_cleaned_texts_into_dataframe(
-        list_of_all_filenames, list_of_all_cleaned_texts)
-    new_dataframe = add_describing_columns_to_dataframe(dataframe)
+    testclass = DataFrameCreator(rel_path_directory)
+    first_dataframe = testclass.dataframe
+    print("Created DataFrame")
 
     # Create total_word_list_with_duplicates
-    total_word_list_with_duplicates = create_total_word_list_with_duplicates(
-        new_dataframe)
-    # print(len(total_word_list_with_duplicates))
-
-    word_rarity_ranking = create_word_rarity_ranking(
-        total_word_list_with_duplicates)
-    print(word_rarity_ranking)
+    testclass2 = RarityRankingCreater(first_dataframe)
+    print(testclass2.word_rarity_ranking)
