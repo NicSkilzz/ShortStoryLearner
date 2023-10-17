@@ -166,12 +166,12 @@ class DataFrameCreator:
 
         self.dataframe['word_list_including_symbols'] = self.dataframe['cleaned_text'].apply(
             lambda x: x.replace(',', ' , ').replace(
-                '.', ' . ').replace(':', ' . ').lower().split()
+                '.', ' . ').replace(':', ' : ').lower().split()
         )
 
         # Calculate the average sentence length
         # Words / symbols
-        self.dataframe['average_sentence_length'] = self.dataframe['word_count_with_duplicates'] / (len(list(self.dataframe['word_list_including_symbols'])) - self.dataframe['word_count_with_duplicates'])
+        self.dataframe['average_sentence_length'] = self.dataframe['word_count_with_duplicates'] / (self.dataframe['word_list_including_symbols'].str.len() - self.dataframe['word_count_with_duplicates'])
 
 
 
@@ -179,3 +179,5 @@ if __name__ == '__main__':
     testclass = DataFrameCreator("./raw_data")
     print(testclass.dataframe.columns)
     print(testclass.dataframe['average_sentence_length'])
+    print(testclass.dataframe['cleaned_text'])
+    print(testclass.dataframe['word_list_including_symbols'])
