@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-class DataFrameCreator:
+class TextDataFrameCreator:
 
     def __init__(self, directory_path):
         '''Uses the class functions to create the complete Dataframe and save the variables after each step.
