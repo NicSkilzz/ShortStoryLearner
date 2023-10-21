@@ -50,7 +50,7 @@ class RarityRankingCreater:
         # Iterate through word_list_without_duplicates and calculate the percentage of each word
         for current_word in word_list_without_duplicates:
             amount += 1
-            if amount % 20 == 0:
+            if amount % 100 == 0:
                 print(f"{amount} / {len(word_list_without_duplicates)}")
             if current_word not in word_list:
                 current_word_count = 0
@@ -81,6 +81,9 @@ class RarityRankingCreater:
         # Add ranking column to word_rarity_ranking_df
         word_rarity_ranking_df['ranking'] = word_rarity_ranking_df.index + 1
 
+        # Set the words as the index of the df
+        word_rarity_ranking_df = word_rarity_ranking_df.set_index('word')
+
         return word_rarity_ranking_df
 
 
@@ -94,3 +97,8 @@ if __name__ == '__main__':
     # Create total_word_list_with_duplicates
     testclass2 = RarityRankingCreater(first_dataframe)
     print(testclass2.word_rarity_ranking)
+    print(testclass2.word_rarity_ranking.loc['and', 'word_percentage'])
+
+    # Add average word rarity to dataframe
+    testclass.add_average_word_rarity_column(testclass2.word_rarity_ranking)
+    print(testclass.dataframe['average_word_rarity'])

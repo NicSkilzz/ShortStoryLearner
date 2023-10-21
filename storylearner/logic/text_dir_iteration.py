@@ -124,7 +124,7 @@ class DataFrameCreator:
             word_rarity_ranking (pd.DataFrame): _description_
         '''
 
-        def average_word_rarity_calculator(word_list, word_rarity_ranking):
+        def average_word_rarity_calculator(word_list: list , word_rarity_ranking: pd.DataFrame):
             '''_summary_
 
             Args:
@@ -145,25 +145,27 @@ class DataFrameCreator:
             amount_words = len(word_list)
 
             for word in word_list:
-                if word in list(word_rarity_ranking['word']):
-                    # Find index of word
-                    # Get percentage of word
-                    # Add percentage to sum of percentages
+                try:
+                    curr_percentage = word_rarity_ranking.loc[word, 'word_percentage']
+                    sum_percentage += curr_percentage
+                except KeyError:
                     continue
 
-            return 0 # Durschnitt
+            return sum_percentage / amount_words
 
-
-
-
+        # Apply the function average_word_rarity_calculator to each list in the pd.Series 'word_list' column
+        # Create a column average_word_list
         self.dataframe['average_word_rarity'] = self.dataframe['word_list'].apply(
             lambda x: average_word_rarity_calculator(x, word_rarity_ranking)
         )
 
     def add_average_sentence_length(self):
-        '''_summary_
+        '''Adds the average sentence length to the dataframe. Adds 2 columns:
+        "word_list_including_symbols' and "average_sentence_length"
         '''
 
+        # Replace the punctuation with a punctuation in between to spaces
+        # Create a list with all the words and punctuations seperated from the words
         self.dataframe['word_list_including_symbols'] = self.dataframe['cleaned_text'].apply(
             lambda x: x.replace(',', ' , ').replace(
                 '.', ' . ').replace(':', ' : ').lower().split()
