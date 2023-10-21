@@ -1,6 +1,6 @@
 import pandas as pd
 
-from storylearner.logic.text_dir_iteration import DataFrameCreator
+from storylearner.logic.text_dataframe_creator import TextDataFrameCreator
 
 class RarityRankingCreater:
 
@@ -90,7 +90,7 @@ class RarityRankingCreater:
 if __name__ == '__main__':
     # Create Test-DataFrame
     rel_path_directory = './raw_data'
-    testclass = DataFrameCreator(rel_path_directory)
+    testclass = TextDataFrameCreator(rel_path_directory)
     first_dataframe = testclass.dataframe
     print("Created DataFrame")
 
