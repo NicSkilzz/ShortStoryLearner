@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 class TextDataFrameCreator:
 
@@ -175,10 +176,27 @@ class TextDataFrameCreator:
         # Words / symbols
         self.dataframe['average_sentence_length'] = self.dataframe['word_count_with_duplicates'] / (self.dataframe['word_list_including_symbols'].str.len() - self.dataframe['word_count_with_duplicates'])
 
+    def create_scaled_dataframe(self):
+
+        # Filter needed columns from dataframe
+        filtered_dataframe = self.dataframe.filter(
+            items=['filenames', 'average_word_length', 'average_sentence_length', 'average_word_rarity']
+        )
+
+        # Use filename from column 'filenames' as the index
+        usable_dataframe = filtered_dataframe.set_index('filenames')
+
+        # Create the scaler and fit and transform the data
+        mmscaler = MinMaxScaler()
+        scaled_ndarray = mmscaler.fit_transform(usable_dataframe)
+
+        # Turn scaled_ndarray into DataFrame
+        self.scaled_dataframe = pd.DataFrame(scaled_ndarray, columns=usable_dataframe.columns)
+
 
 
 if __name__ == '__main__':
-    testclass = DataFrameCreator("./raw_data")
+    testclass = TextDataFrameCreator("./raw_data")
     print(testclass.dataframe.columns)
     print(testclass.dataframe['average_sentence_length'])
     print(testclass.dataframe['cleaned_text'])

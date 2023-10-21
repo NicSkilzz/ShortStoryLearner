@@ -102,3 +102,7 @@ if __name__ == '__main__':
     # Add average word rarity to dataframe
     testclass.add_average_word_rarity_column(testclass2.word_rarity_ranking)
     print(testclass.dataframe['average_word_rarity'])
+
+    # Create scaled_dataframe and add it to testclass
+    testclass.create_scaled_dataframe()
+    print(testclass.scaled_dataframe)
