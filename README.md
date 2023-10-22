@@ -1,7 +1,6 @@
 ### ToDos
-- Calculate average word rarity percentage (K)
-- Weight the variables (avg. word length, avg. sentence length, avg. rarity of words) (K)
-- Change file name to fit classes (K)
+- Add text filenames as id in scaled_dataframe (K)
+- Add text_difficulty_score to scaled_dataframe (K)
 - GUI: Button that loads dataframe to screen (H)
 
 
