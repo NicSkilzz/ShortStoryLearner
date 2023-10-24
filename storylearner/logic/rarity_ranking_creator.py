@@ -89,4 +89,7 @@ if __name__ == '__main__':
 
     # Create scaled_dataframe and add it to testclass
     testclass.create_scaled_dataframe()
-    print(testclass.scaled_dataframe)
+    print(testclass.scaled_dataframe[testclass.scaled_dataframe.columns[0]])
+    print(testclass.scaled_dataframe[testclass.scaled_dataframe.columns[1]])
+    print(testclass.scaled_dataframe[testclass.scaled_dataframe.columns[2]])
+    print(testclass.scaled_dataframe[testclass.scaled_dataframe.columns[3]])
