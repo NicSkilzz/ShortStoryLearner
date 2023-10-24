@@ -193,6 +193,17 @@ class TextDataFrameCreator:
         # Turn scaled_ndarray into DataFrame
         self.scaled_dataframe = pd.DataFrame(scaled_ndarray, columns=usable_dataframe.columns)
 
+        # Set filenames as index
+        self.scaled_dataframe['filenames'] = filtered_dataframe['filenames']
+        self.scaled_dataframe = self.scaled_dataframe.set_index('filenames')
+
+        # Add a difficulty store column to the scaled_dataframe
+        self.scaled_dataframe['difficulty_score'] = (
+            self.scaled_dataframe['average_word_length']
+            + self.scaled_dataframe['average_sentence_length']
+            + (1 - self.scaled_dataframe['average_word_rarity'])
+            )
+
 
 
 if __name__ == '__main__':
