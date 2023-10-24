@@ -1,4 +1,5 @@
 import pandas as pd
+from collections import Counter
 
 from storylearner.logic.text_dataframe_creator import TextDataFrameCreator
 
@@ -42,33 +43,16 @@ class RarityRankingCreater:
         word_list_without_duplicates = list(set(total_word_list_with_duplicates))
 
         # Create lists for columns: "word" and "word_percentage"
-        word_list = []
-        word_percentage_list = []
         print("Starting Iteration word_list_without_duplicates")
-        amount = 0
         print(len(word_list_without_duplicates))
         # Iterate through word_list_without_duplicates and calculate the percentage of each word
-        for current_word in word_list_without_duplicates:
-            amount += 1
-            if amount % 100 == 0:
-                print(f"{amount} / {len(word_list_without_duplicates)}")
-            if current_word not in word_list:
-                current_word_count = 0
-                for word in total_word_list_with_duplicates:
-                    if word == current_word:
-                        current_word_count += 1
-
-                # Calculate current_word_percentage
-                current_word_percentage = current_word_count / total_amount_words
-
-                # Append current values to lists
-                word_list.append(current_word)
-                word_percentage_list.append(current_word_percentage)
+        word_counter = Counter(total_word_list_with_duplicates)
+        word_percentage_dict = {item[0]: item[1] / total_amount_words for item in word_counter.items()}
 
         # Create a temporary dictionary
         word_rarity_df_as_dict = {
-            'word': word_list,
-            'word_percentage': word_percentage_list
+            'word': word_percentage_dict.keys(),
+            'word_percentage': word_percentage_dict.values()
         }
 
         # Turn dictionary into DataFrame
