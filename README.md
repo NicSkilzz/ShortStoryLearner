@@ -1,7 +1,8 @@
 ### ToDos
-- Add text filenames as id in scaled_dataframe (K)
-- Add text_difficulty_score to scaled_dataframe (K)
-- GUI: Button that loads dataframe to screen (H)
+- function to display dataframe
+- Add title, word_count to scaled_dataframe
+- Create a main screen (first only button to load df)
+- make dataframe sortable and filterable
 
 
 ### Help
