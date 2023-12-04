@@ -93,3 +93,4 @@ if __name__ == '__main__':
     print(testclass.scaled_dataframe[testclass.scaled_dataframe.columns[1]])
     print(testclass.scaled_dataframe[testclass.scaled_dataframe.columns[2]])
     print(testclass.scaled_dataframe[testclass.scaled_dataframe.columns[3]])
+    print(testclass.scaled_dataframe.columns)
