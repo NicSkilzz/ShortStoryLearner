@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import *
 from storylearner.logic.rarity_ranking_creator import RarityRankingCreater
 from storylearner.logic.text_dataframe_creator import TextDataFrameCreator
+import pandas as pd
 
 class App(tk.Frame):
     def __init__(self, parent, df):
@@ -40,7 +41,7 @@ class App(tk.Frame):
 
         for row in range(self.df.shape[0]):
             self.tv.insert(parent="", index=0, text="", values=(
-                self.df['id'][row], self.df['filenames'][row], self.df['difficulty_score'][row])
+                self.df['id'][row], self.df['Title'][row], self.df['difficulty_score'][row])
                            )
 
 
@@ -50,11 +51,14 @@ tdf_creator.add_average_word_rarity_column(rr_creator.word_rarity_ranking)
 tdf_creator.create_scaled_dataframe()
 df = tdf_creator.scaled_dataframe
 
+catalog_df = pd.read_csv("pg_catalog_de.csv")
+merged_dataframe = catalog_df.merge(df, left_on='Text#', right_on='id')
+
 
 root = tk.Tk()
 root.geometry('1200x770')
 root.title("NICO")
-myapp = App(root, df)
+myapp = App(root, merged_dataframe)
 myapp.mainloop()
 
 

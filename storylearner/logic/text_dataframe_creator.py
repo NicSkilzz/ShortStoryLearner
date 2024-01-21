@@ -195,7 +195,8 @@ class TextDataFrameCreator:
 
         # Set filenames as index
         self.scaled_dataframe['filenames'] = filtered_dataframe['filenames']
-        self.scaled_dataframe = self.scaled_dataframe.set_index('filenames')
+        self.scaled_dataframe['id'] = self.scaled_dataframe['filenames'].apply(lambda x: int(x.replace(".txt", "")))
+        #self.scaled_dataframe = self.scaled_dataframe.set_index('filenames')
 
         # Add a difficulty store column to the scaled_dataframe
         self.scaled_dataframe['difficulty_score'] = (
